@@ -14,7 +14,7 @@ export default function HeroSection({ onCTAClick }: HeroSectionProps) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-20 pb-32">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[hsl(210,70%,58%)]/10 via-[hsl(210,20%,98%)] to-[hsl(160,84%,39%)]/10 pt-20 pb-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left space-y-8 fade-in-section opacity-0">
@@ -26,17 +26,14 @@ export default function HeroSection({ onCTAClick }: HeroSectionProps) {
               створюйте інструкції з досвіду ваших співробітників
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button
-                onClick={handleCTAClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg"
-              >
+              <Button onClick={handleCTAClick} className="px-8 py-6 text-lg">
                 Спробувати безкоштовно
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </div>
           <div className="fade-in-section opacity-0">
-            <div className="rounded-2xl shadow-2xl w-full aspect-video bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+            <div className="rounded-2xl shadow-2xl w-full aspect-video bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center overflow-hidden">
               <Image
                 src="/hero.avif"
                 alt="AI Assistant"

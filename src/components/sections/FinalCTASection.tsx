@@ -39,7 +39,7 @@ export default function FinalCTASection({ onCTAClick }: FinalCTASectionProps) {
   return (
     <section
       ref={sectionRef}
-      className="py-20 bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600 text-white"
+      className="py-20 bg-gradient-to-r from-[hsl(210,70%,58%)] via-[hsl(210,70%,58%)]/90 to-[hsl(160,84%,39%)] text-[hsl(0,0%,100%)]"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center space-y-8 fade-in-section opacity-0">
@@ -52,7 +52,7 @@ export default function FinalCTASection({ onCTAClick }: FinalCTASectionProps) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               onClick={handleCTAClick}
-              className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-6 text-lg"
+              className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-lg"
             >
               Отримати ранній доступ
               <ArrowRight className="ml-2 h-5 w-5" />
