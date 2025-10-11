@@ -273,9 +273,9 @@ export default function ContactFormModal({
               <Label htmlFor="name">
                 Ім'я <span className="text-red-600">*</span>
               </Label>
-              <span className="text-xs text-gray-500">
+              {/* <span className="text-xs text-gray-500">
                 {formData.name.length}/{MAX_LENGTHS.name}
-              </span>
+              </span> */}
             </div>
             <Input
               id="name"
@@ -301,9 +301,9 @@ export default function ContactFormModal({
               <Label htmlFor="company">
                 Компанія <span className="text-red-600">*</span>
               </Label>
-              <span className="text-xs text-gray-500">
+              {/* <span className="text-xs text-gray-500">
                 {formData.company.length}/{MAX_LENGTHS.company}
-              </span>
+              </span> */}
             </div>
             <Input
               id="company"
@@ -329,9 +329,9 @@ export default function ContactFormModal({
               <Label htmlFor="contact">
                 Email / Телефон <span className="text-red-600">*</span>
               </Label>
-              <span className="text-xs text-gray-500">
+              {/* <span className="text-xs text-gray-500">
                 {formData.contact.length}/{MAX_LENGTHS.contact}
-              </span>
+              </span> */}
             </div>
             <Input
               id="contact"
@@ -356,9 +356,9 @@ export default function ContactFormModal({
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <Label htmlFor="painPoint">Найбільший Ваш головний біль</Label>
-              <span className="text-xs text-gray-500">
+              {/* <span className="text-xs text-gray-500">
                 {formData.painPoint.length}/{MAX_LENGTHS.painPoint}
-              </span>
+              </span> */}
             </div>
             <Textarea
               id="painPoint"
