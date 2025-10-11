@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     await sendToGoogleSheets(body);
 
     // Для демо просто логуємо
-    console.log('Нова заявка:', body);
+    // console.log('Нова заявка:', body);
 
     return NextResponse.json(
       {

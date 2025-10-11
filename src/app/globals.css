@@ -129,3 +129,30 @@ All colors MUST be HSL.
     border-color: hsl(var(--border));
   }
 }
+
+@supports (-webkit-touch-callout: none) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Додатковий фікс для всіх форм */
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='number'],
+input[type='password'],
+input[type='date'],
+input[type='datetime-local'],
+input[type='month'],
+input[type='search'],
+input[type='time'],
+input[type='url'],
+input[type='week'],
+select,
+textarea {
+  touch-action: manipulation;
+  font-size: 16px;
+}
