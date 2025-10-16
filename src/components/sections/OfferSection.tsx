@@ -13,7 +13,7 @@ export default function OfferSection() {
             Ми шукаємо компанії для пілотного запуску
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Отримайте доступ до AI-асистента безкоштовно на 30 днів і
+            Отримайте доступ до AI-асистента безкоштовно на 14 днів і
             подивіться, як зменшиться кількість запитань уже з першого тижня
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
