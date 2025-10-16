@@ -2,27 +2,21 @@
 // app/api/contact/route.ts
 // ============================================
 import { NextRequest, NextResponse } from 'next/server';
-
-interface ContactFormData {
-  name: string;
-  company: string;
-  contact: string;
-  painPoint: string;
-}
+import { sendToGoogleSheets, ContactFormData } from '@/lib/sendToGoogleSheets';
 
 export async function POST(request: NextRequest) {
   try {
     const body: ContactFormData = await request.json();
 
-    // Валідація
+    // ✅ Базова валідація
     if (!body.name || !body.company || !body.contact) {
       return NextResponse.json(
-        { error: "Будь ласка, заповніть всі обов'язкові поля" },
+        { error: "Будь ласка, заповніть усі обов'язкові поля" },
         { status: 400 }
       );
     }
 
-    // Валідація email або телефону
+    // ✅ Перевірка формату контактів
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\+?[\d\s\-()]+$/;
 
@@ -60,8 +54,17 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error processing contact form:', error);
+
+    // 🔥 Детальніша обробка помилок Google API
+    if (error.code === 403 || error.code === 401) {
+      return NextResponse.json(
+        { error: 'Помилка авторизації Google API' },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
       { error: 'Внутрішня помилка сервера' },
       { status: 500 }
@@ -125,73 +128,6 @@ async function sendToTelegram(data: ContactFormData) {
       text: message,
       parse_mode: 'HTML',
     }),
-  });
-}
-*/
-
-// ============================================
-// Приклад інтеграції з Google Sheets
-// ============================================
-// npm install googleapis
-
-import { google } from 'googleapis';
-
-async function sendToGoogleSheets(data: ContactFormData) {
-  const auth = new google.auth.GoogleAuth({
-    credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY!),
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
-
-  const sheets = google.sheets({ version: 'v4', auth });
-  const spreadsheetId = process.env.GOOGLE_SHEET_ID!;
-
-  // 🕓 Форматуємо дату у вигляді "dd.MM.yyyy HH:mm"
-  const now = new Date();
-  const formattedDate = now
-    .toLocaleString('uk-UA', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-    .replace(',', '');
-
-  await sheets.spreadsheets.values.append({
-    spreadsheetId,
-    range: 'Заявки!A:E',
-    valueInputOption: 'USER_ENTERED',
-    requestBody: {
-      values: [
-        [
-          formattedDate,
-          data.name,
-          data.company,
-          data.contact,
-          data.painPoint || '',
-        ],
-      ],
-    },
-  });
-}
-
-// ============================================
-// Приклад інтеграції з базою даних (Prisma)
-// ============================================
-/*
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
-async function saveToDatabase(data: ContactFormData) {
-  await prisma.contactRequest.create({
-    data: {
-      name: data.name,
-      company: data.company,
-      contact: data.contact,
-      painPoint: data.painPoint,
-      createdAt: new Date(),
-    },
   });
 }
 */
