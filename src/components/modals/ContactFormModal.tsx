@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Loader2 } from 'lucide-react';
-import { trackFormSubmit, event } from '@/lib/analytics';
+// import { trackFormSubmit, event } from '@/lib/analytics';
 
 interface ContactFormModalProps {
   open: boolean;
@@ -68,13 +68,7 @@ export default function ContactFormModal({
 
   // Відстеження відкриття модалки
   const handleModalOpen = (isOpen: boolean) => {
-    if (isOpen) {
-      event({
-        action: 'modal_opened',
-        category: 'Contact Form',
-        label: 'Contact Form Opened',
-      });
-    } else {
+    if (!isOpen) {
       // Очищаємо помилки при закритті
       setFieldErrors({});
       setError(null);
@@ -133,13 +127,21 @@ export default function ContactFormModal({
       });
 
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(data.error || 'Помилка відправки форми');
       }
 
       // Відстеження успішної відправки
-      trackFormSubmit(formData);
+      if (typeof window !== 'undefined' && window.dataLayer) {
+        window.dataLayer.push({
+          event: 'form_submit',
+          form_name: 'contact_form',
+        });
+      }
+
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead');
+      } // стандартна FB подія
 
       alert(data.message || "Дякуємо! Ми зв'яжемося з вами найближчим часом.");
 
@@ -154,13 +156,6 @@ export default function ContactFormModal({
           ? err.message
           : 'Помилка відправки форми. Спробуйте ще раз.'
       );
-
-      // Відстеження помилки
-      event({
-        action: 'form_error',
-        category: 'Contact Form',
-        label: err instanceof Error ? err.message : 'Unknown error',
-      });
     } finally {
       setIsSubmitting(false);
     }
@@ -190,7 +185,7 @@ export default function ContactFormModal({
 
   return (
     <Dialog open={open} onOpenChange={handleModalOpen}>
-      <DialogContent className="sm:max-w-[500px] ios-form-fix">
+      <DialogContent className="sm:max-w-[500px] ios-form-fix text-gray-900">
         {/* Додаємо стилі для фіксу iOS zoom */}
         <style jsx global>{`
           /* Фікс для iOS - забороняємо зум при фокусі на інпутах */
