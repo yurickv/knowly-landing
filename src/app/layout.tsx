@@ -2,10 +2,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Script from 'next/script';
-import {
-  GoogleTagManager,
-  GoogleTagManagerNoScript,
-} from '@/components/GoogleTagManager';
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic'],
@@ -23,14 +19,14 @@ export const metadata: Metadata = {
   authors: [{ name: 'AI-Асистент' }],
   creator: 'AI-Асистент',
   publisher: 'AI-Асистент',
-  metadataBase: new URL('https://yourdomain.com'),
+  metadataBase: new URL('https://www.knowly.com.ua'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'uk_UA',
-    url: 'https://yourdomain.com',
+    url: 'https://www.knowly.com.ua',
     title: 'AI-Асистент для вашої команди',
     description:
       'Отримуйте миттєві відповіді на робочі запитання та автоматично створюйте інструкції з досвіду ваших співробітників',
@@ -61,10 +57,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
-    // yandex: 'your-yandex-verification-code',
-  },
+  // verification: {
+  //   google: 'your-google-verification-code',
+  // },
 };
 
 export default function RootLayout({
@@ -117,9 +112,9 @@ export default function RootLayout({
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
               j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id=${process.env.NEXT_PUBLIC_GTM_ID}'+dl;
+              'https://www.googletagmanager.com/gtm.js?id=${gtmId}'+dl;
               f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
+            })(window,document,'script','dataLayer','${gtmId}');
             `,
           }}
         />
