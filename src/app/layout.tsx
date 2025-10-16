@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Script from 'next/script';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({
   subsets: ['latin', 'cyrillic'],
@@ -103,6 +105,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         {children}
+        <ToastContainer position="top-right" autoClose={4000} />
         {/* Google Tag Manager */}
         <Script
           id="gtm-script"

@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Loader2 } from 'lucide-react';
-// import { trackFormSubmit, event } from '@/lib/analytics';
+import { toast } from 'react-toastify';
 
 interface ContactFormModalProps {
   open: boolean;
@@ -111,6 +111,7 @@ export default function ContactFormModal({
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
       setError('Будь ласка, виправте помилки у формі');
+      toast.error('Будь ласка, виправте помилки у формі');
       return;
     }
 
@@ -120,9 +121,7 @@ export default function ContactFormModal({
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
@@ -131,7 +130,7 @@ export default function ContactFormModal({
         throw new Error(data.error || 'Помилка відправки форми');
       }
 
-      // Відстеження успішної відправки
+      // GTM
       if (typeof window !== 'undefined' && window.dataLayer) {
         window.dataLayer.push({
           event: 'form_submit',
@@ -139,11 +138,14 @@ export default function ContactFormModal({
         });
       }
 
+      // Facebook Pixel
       if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
         window.fbq('track', 'Lead');
-      } // стандартна FB подія
+      }
 
-      alert(data.message || "Дякуємо! Ми зв'яжемося з вами найближчим часом.");
+      toast.success(
+        data.message || "Дякуємо! Ми зв'яжемося з вами найближчим часом."
+      );
 
       onOpenChange(false);
       setFormData({ name: '', company: '', contact: '', painPoint: '' });
@@ -151,11 +153,12 @@ export default function ContactFormModal({
       setFieldErrors({});
     } catch (err) {
       console.error('Form submission error:', err);
-      setError(
+      const errorMsg =
         err instanceof Error
           ? err.message
-          : 'Помилка відправки форми. Спробуйте ще раз.'
-      );
+          : 'Помилка відправки форми. Спробуйте ще раз.';
+      setError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setIsSubmitting(false);
     }
