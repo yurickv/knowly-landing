@@ -1,10 +1,9 @@
-import { Bot } from 'lucide-react';
 import Image from 'next/image';
 import CTAButton from '@/components/ui/CTAButton';
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[hsl(210,70%,58%)]/10 via-[hsl(210,20%,98%)] to-[hsl(160,84%,39%)]/10 pt-20 pb-32">
+    <section className="relative overflow-hidden  pt-32 md:pt-40 pb-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left space-y-8">
@@ -19,18 +18,20 @@ export default function HeroSection() {
               <CTAButton label="Спробувати безкоштовно" variant="hero" />
             </div>
           </div>
-          <div>
-            <div className="rounded-2xl shadow-2xl w-full aspect-video bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center overflow-hidden">
-              <Image
-                src="/hero.avif"
-                alt="AI Assistant"
-                width={1200}
-                height={630}
-                priority
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,..."
-              />
-            </div>
+
+          <div className="relative rounded-2xl w-full">
+            {/* Radial gradient background */}
+            <div className="absolute -inset-8 md:-inset-12 rounded-full bg-purple-200 blur-3xl opacity-50" />
+            <Image
+              src="/hero-picture.webp"
+              alt="AI Assistant"
+              width={360}
+              height={332}
+              priority
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,..."
+              className="relative z-10"
+            />
           </div>
         </div>
       </div>

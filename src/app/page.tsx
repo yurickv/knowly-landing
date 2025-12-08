@@ -1,3 +1,4 @@
+import Header from '@/components/sections/Header';
 import HeroSection from '@/components/sections/HeroSection';
 import PainSection from '@/components/sections/PainSection';
 import SolutionSection from '@/components/sections/SolutionSection';
@@ -10,6 +11,7 @@ import Footer from '@/components/sections/Footer';
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
+      <Header />
       <HeroSection />
       <PainSection />
       <SolutionSection />

@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import './globals.css';
 import Script from 'next/script';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const inter = Inter({
+const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
   display: 'swap', // швидше показує текст
-  variable: '--font-inter',
+  variable: '--font-manrope',
   preload: true,
 });
 
@@ -103,7 +103,7 @@ export default function RootLayout({
           })}
         </Script>
       </head>
-      <body className={inter.className}>
+      <body className={manrope.className}>
         {children}
         <ToastContainer position="top-right" autoClose={4000} />
         {/* Google Tag Manager */}

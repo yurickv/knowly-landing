@@ -44,11 +44,11 @@ export default function CTAButton({
       case 'offer':
         return `bg-[hsl(160,84%,39%)] text-[hsl(0,0%,100%)] hover:bg-[hsl(160,84%,39%)/0.9] 
                 shadow-[0_4px_20px_-4px_hsl(160,84%,39%/0.3)] hover:shadow-[0_8px_30px_-6px_hsl(160,84%,39%/0.4)] 
-                hover:scale-105 transition-all duration-300 px-8 py-6 text-lg`;
+                hover:scale-105 transition-all duration-300 px-8 py-6 `;
       case 'final':
-        return 'bg-white text-black hover:bg-gray-100 px-8 py-6 text-lg';
+        return 'bg-white text-black hover:bg-gray-100 px-8 py-6 ';
       case 'hero':
-        return 'px-8 py-6 text-lg';
+        return 'px-8 py-6 ';
       default:
         return '';
     }
@@ -61,7 +61,6 @@ export default function CTAButton({
         className={`${getButtonClassName()} ${className}`}
       >
         {label}
-        <ArrowRight className="ml-2 h-5 w-5" />
       </Button>
 
       {modalOpen && (
