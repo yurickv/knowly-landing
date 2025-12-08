@@ -48,7 +48,8 @@ export default function CTAButton({
       case 'final':
         return 'bg-white text-black hover:bg-gray-100 px-8 py-6 ';
       case 'hero':
-        return 'px-8 py-6 ';
+        return `transition-all duration-300 bg-[#150D5E] hover:bg-[#534D8C] py-4 px-4 w-full md:w-fit 
+                md:px-6 rounded-[16px] text-xl font-semibold leading-normal min-h-[54px]`;
       default:
         return '';
     }
