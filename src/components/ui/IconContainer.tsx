@@ -4,6 +4,7 @@ interface IconContainerProps {
   iconSrc: string;
   iconAlt?: string;
   rotation?: number;
+  iconRotation?: number;
   iconWidth?: number;
   iconHeight?: number;
   className?: string;
@@ -15,6 +16,7 @@ export default function IconContainer({
   iconWidth = 32,
   iconHeight = 32,
   rotation = 0,
+  iconRotation,
   className = '',
 }: IconContainerProps) {
   return (
@@ -40,7 +42,7 @@ export default function IconContainer({
               height={iconHeight}
               className="w-full h-full object-contain"
               style={{
-                transform: `rotate(-${rotation}deg)`,
+                transform: `rotate(${iconRotation !== undefined ? iconRotation : -rotation}deg)`,
               }}
             />
           </div>
