@@ -1,5 +1,6 @@
 import Header from '@/components/sections/Header';
 import HeroSection from '@/components/sections/HeroSection';
+import InstantAnswersSection from '@/components/sections/InstantAnswersSection';
 import PainSection from '@/components/sections/PainSection';
 import SolutionSection from '@/components/sections/SolutionSection';
 import BenefitsSection from '@/components/sections/BenefitsSection';
@@ -18,6 +19,7 @@ export default function Home() {
       {/* <BenefitsSection />
       <OfferSection /> */}
       <TrustSection />
+      <InstantAnswersSection />
       {/* <FinalCTASection /> */}
       <Footer />
     </main>
