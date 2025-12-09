@@ -1,10 +1,13 @@
 import { google } from 'googleapis';
 
 export interface ContactFormData {
-  name: string;
-  company: string;
-  contact: string;
-  painPoint?: string;
+  telegram: string;
+  comment?: string;
+  // Старі поля (закоментовано)
+  // name: string;
+  // company: string;
+  // contact: string;
+  // painPoint?: string;
 }
 
 export async function sendToGoogleSheets(data: ContactFormData) {
@@ -34,16 +37,14 @@ export async function sendToGoogleSheets(data: ContactFormData) {
 
   await sheets.spreadsheets.values.append({
     spreadsheetId,
-    range: 'Заявки!A:E',
+    range: 'Заявки!A:C',
     valueInputOption: 'USER_ENTERED',
     requestBody: {
       values: [
         [
           formattedDate,
-          data.name,
-          data.company,
-          data.contact,
-          data.painPoint || '',
+          data.telegram,
+          data.comment || '',
         ],
       ],
     },

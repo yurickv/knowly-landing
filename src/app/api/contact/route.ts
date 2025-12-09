@@ -9,23 +9,50 @@ export async function POST(request: NextRequest) {
     const body: ContactFormData = await request.json();
 
     // ✅ Базова валідація
-    if (!body.name || !body.company || !body.contact) {
+    if (!body.telegram) {
       return NextResponse.json(
-        { error: "Будь ласка, заповніть усі обов'язкові поля" },
+        { error: "Будь ласка, вкажіть Telegram контакт" },
         { status: 400 }
       );
     }
 
-    // ✅ Перевірка формату контактів
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\+?[\d\s\-()]+$/;
+    // ✅ Перевірка формату Telegram (нік або номер телефону)
+    const telegramUsernameRegex = /^@?[a-zA-Z0-9_]{5,32}$/; // Нік з або без @
+    const phoneFormatRegex = /^\+?[\d\s\-()]+$/; // Формат номера телефону
 
-    if (!emailRegex.test(body.contact) && !phoneRegex.test(body.contact)) {
+    let isValid = false;
+
+    if (telegramUsernameRegex.test(body.telegram)) {
+      isValid = true;
+    } else if (phoneFormatRegex.test(body.telegram)) {
+      // Перевіряємо кількість цифр у номері телефону
+      const digitsOnly = body.telegram.replace(/\D/g, '');
+      // Мінімум 10 цифр (локальні номери), максимум 15 (міжнародний стандарт E.164)
+      isValid = digitsOnly.length >= 10 && digitsOnly.length <= 15;
+    }
+
+    if (!isValid) {
       return NextResponse.json(
-        { error: 'Невірний формат email або телефону' },
+        { error: 'Невірний формат Telegram (вкажіть нік або номер телефону)' },
         { status: 400 }
       );
     }
+
+    // Старі перевірки (закоментовано)
+    // if (!body.name || !body.company || !body.contact) {
+    //   return NextResponse.json(
+    //     { error: "Будь ласка, заповніть усі обов'язкові поля" },
+    //     { status: 400 }
+    //   );
+    // }
+
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // if (!emailRegex.test(body.contact) && !phoneRegex.test(body.contact)) {
+    //   return NextResponse.json(
+    //     { error: 'Невірний формат email або телефону' },
+    //     { status: 400 }
+    //   );
+    // }
 
     // Тут можна додати різні інтеграції:
 
@@ -86,14 +113,12 @@ async function sendEmail(data: ContactFormData) {
   const msg = {
     to: process.env.CONTACT_EMAIL!,
     from: process.env.FROM_EMAIL!,
-    subject: `Нова заявка від ${data.name} (${data.company})`,
+    subject: `Нова заявка від ${data.telegram}`,
     html: `
       <h2>Нова заявка з лендінгу</h2>
-      <p><strong>Ім'я:</strong> ${data.name}</p>
-      <p><strong>Компанія:</strong> ${data.company}</p>
-      <p><strong>Контакт:</strong> ${data.contact}</p>
-      <p><strong>Головний біль:</strong></p>
-      <p>${data.painPoint || 'Не вказано'}</p>
+      <p><strong>Telegram:</strong> ${data.telegram}</p>
+      <p><strong>Коментар:</strong></p>
+      <p>${data.comment || 'Не вказано'}</p>
     `,
   };
 
@@ -108,18 +133,16 @@ async function sendEmail(data: ContactFormData) {
 async function sendToTelegram(data: ContactFormData) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN!;
   const chatId = process.env.TELEGRAM_CHAT_ID!;
-  
+
   const message = `
 🔔 Нова заявка з лендінгу!
 
-👤 Ім'я: ${data.name}
-🏢 Компанія: ${data.company}
-📞 Контакт: ${data.contact}
-💬 Головний біль: ${data.painPoint || 'Не вказано'}
+📱 Telegram: ${data.telegram}
+💬 Коментар: ${data.comment || 'Не вказано'}
   `.trim();
 
   const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-  
+
   await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

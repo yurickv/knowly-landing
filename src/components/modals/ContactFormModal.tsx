@@ -20,18 +20,24 @@ interface ContactFormModalProps {
 }
 
 interface FormData {
-  name: string;
-  company: string;
-  contact: string;
-  painPoint: string;
+  telegram: string;
+  comment: string;
+  // Старі поля (закоментовано)
+  // name: string;
+  // company: string;
+  // contact: string;
+  // painPoint: string;
 }
 
 // Константи для валідації
 const MAX_LENGTHS = {
-  name: 100,
-  company: 100,
-  contact: 100,
-  painPoint: 500,
+  telegram: 100,
+  comment: 500,
+  // Старі ліміти (закоментовано)
+  // name: 100,
+  // company: 100,
+  // contact: 100,
+  // painPoint: 500,
 };
 
 export default function ContactFormModal({
@@ -39,32 +45,50 @@ export default function ContactFormModal({
   onOpenChange,
 }: ContactFormModalProps) {
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    company: '',
-    contact: '',
-    painPoint: '',
+    telegram: '',
+    comment: '',
+    // Старі поля (закоментовано)
+    // name: '',
+    // company: '',
+    // contact: '',
+    // painPoint: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Partial<FormData>>({});
 
-  // Функція валідації email
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  // Функція валідації Telegram (нік або номер телефону)
+  const validateTelegram = (telegram: string) => {
+    // Нік Telegram: з або без @, від 5 до 32 символів
+    const telegramUsernameRegex = /^@?[a-zA-Z0-9_]{5,32}$/;
+
+    // Номер телефону: перевіряємо формат і кількість цифр
+    const phoneFormatRegex = /^\+?[\d\s\-()]+$/;
+    if (phoneFormatRegex.test(telegram)) {
+      // Видаляємо всі нецифрові символи і перевіряємо довжину
+      const digitsOnly = telegram.replace(/\D/g, '');
+      // Мінімум 10 цифр (локальні номери), максимум 15 (міжнародний стандарт E.164)
+      return digitsOnly.length >= 10 && digitsOnly.length <= 15;
+    }
+
+    return telegramUsernameRegex.test(telegram);
   };
 
-  // Функція валідації телефону (український формат)
-  const validatePhone = (phone: string) => {
-    const phoneRegex = /^\+?3?8?0?\d{9}$/;
-    return phoneRegex.test(phone.replace(/[\s-()]/g, ''));
-  };
+  // Старі функції валідації (закоментовано)
+  // const validateEmail = (email: string) => {
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return emailRegex.test(email);
+  // };
 
-  // Функція валідації контакту (email або телефон)
-  const validateContact = (contact: string) => {
-    return validateEmail(contact) || validatePhone(contact);
-  };
+  // const validatePhone = (phone: string) => {
+  //   const phoneRegex = /^\+?3?8?0?\d{9}$/;
+  //   return phoneRegex.test(phone.replace(/[\s-()]/g, ''));
+  // };
+
+  // const validateContact = (contact: string) => {
+  //   return validateEmail(contact) || validatePhone(contact);
+  // };
 
   // Відстеження відкриття модалки
   const handleModalOpen = (isOpen: boolean) => {
@@ -81,32 +105,46 @@ export default function ContactFormModal({
     const errors: Partial<FormData> = {};
 
     // Валідація полів
-    if (!formData.name) {
-      errors.name = "Ім'я є обов'язковим";
-    } else if (formData.name.length > MAX_LENGTHS.name) {
-      errors.name = `Ім'я не може бути довшим за ${MAX_LENGTHS.name} символів`;
+    if (!formData.telegram) {
+      errors.telegram = "Telegram є обов'язковим";
+    } else if (formData.telegram.length > MAX_LENGTHS.telegram) {
+      errors.telegram = `Telegram не може бути довшим за ${MAX_LENGTHS.telegram} символів`;
+    } else if (!validateTelegram(formData.telegram)) {
+      errors.telegram =
+        'Введіть коректний Telegram нік (@username) або номер телефону';
     }
 
-    if (!formData.company) {
-      errors.company = "Компанія є обов'язковою";
-    } else if (formData.company.length > MAX_LENGTHS.company) {
-      errors.company = `Назва компанії не може бути довшою за ${MAX_LENGTHS.company} символів`;
+    if (formData.comment && formData.comment.length > MAX_LENGTHS.comment) {
+      errors.comment = `Коментар не може бути довшим за ${MAX_LENGTHS.comment} символів`;
     }
 
-    if (!formData.contact) {
-      errors.contact = "Email або телефон є обов'язковим";
-    } else if (formData.contact.length > MAX_LENGTHS.contact) {
-      errors.contact = `Контакт не може бути довшим за ${MAX_LENGTHS.contact} символів`;
-    } else if (!validateContact(formData.contact)) {
-      errors.contact = 'Введіть коректний email або номер телефону';
-    }
+    // Старі валідації (закоментовано)
+    // if (!formData.name) {
+    //   errors.name = "Ім'я є обов'язковим";
+    // } else if (formData.name.length > MAX_LENGTHS.name) {
+    //   errors.name = `Ім'я не може бути довшим за ${MAX_LENGTHS.name} символів`;
+    // }
 
-    if (
-      formData.painPoint &&
-      formData.painPoint.length > MAX_LENGTHS.painPoint
-    ) {
-      errors.painPoint = `Опис не може бути довшим за ${MAX_LENGTHS.painPoint} символів`;
-    }
+    // if (!formData.company) {
+    //   errors.company = "Компанія є обов'язковою";
+    // } else if (formData.company.length > MAX_LENGTHS.company) {
+    //   errors.company = `Назва компанії не може бути довшою за ${MAX_LENGTHS.company} символів`;
+    // }
+
+    // if (!formData.contact) {
+    //   errors.contact = "Email або телефон є обов'язковим";
+    // } else if (formData.contact.length > MAX_LENGTHS.contact) {
+    //   errors.contact = `Контакт не може бути довшим за ${MAX_LENGTHS.contact} символів`;
+    // } else if (!validateContact(formData.contact)) {
+    //   errors.contact = 'Введіть коректний email або номер телефону';
+    // }
+
+    // if (
+    //   formData.painPoint &&
+    //   formData.painPoint.length > MAX_LENGTHS.painPoint
+    // ) {
+    //   errors.painPoint = `Опис не може бути довшим за ${MAX_LENGTHS.painPoint} символів`;
+    // }
 
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
@@ -148,7 +186,7 @@ export default function ContactFormModal({
       );
 
       onOpenChange(false);
-      setFormData({ name: '', company: '', contact: '', painPoint: '' });
+      setFormData({ telegram: '', comment: '' });
       setError(null);
       setFieldErrors({});
     } catch (err) {
@@ -188,7 +226,7 @@ export default function ContactFormModal({
 
   return (
     <Dialog open={open} onOpenChange={handleModalOpen}>
-      <DialogContent className="sm:max-w-[500px] ios-form-fix text-gray-900 ">
+      <DialogContent className="sm:max-w-[500px] ios-form-fix text-[#0D0746] ">
         {/* Додаємо стилі для фіксу iOS zoom */}
         <style jsx global>{`
           /* Фікс для iOS - забороняємо зум при фокусі на інпутах */
@@ -255,7 +293,7 @@ export default function ContactFormModal({
 
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
-            Отримати демо
+            Забронювати демо
           </DialogTitle>
         </DialogHeader>
 
@@ -268,12 +306,58 @@ export default function ContactFormModal({
 
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <Label htmlFor="name">
-                Ім'я <span className="text-red-600">*</span>
+              <Label htmlFor="telegram">
+                Telegram <span className="text-red-600">*</span>
               </Label>
-              {/* <span className="text-xs text-gray-500">
-                {formData.name.length}/{MAX_LENGTHS.name}
-              </span> */}
+            </div>
+            <Input
+              id="telegram"
+              type="text"
+              value={formData.telegram}
+              onChange={(e) => handleChange('telegram', e.target.value)}
+              placeholder="@username або +380XXXXXXXXX"
+              disabled={isSubmitting}
+              required
+              autoComplete="off"
+              className={`text-base ${
+                fieldErrors.telegram ? 'border-red-500' : ''
+              }`}
+              maxLength={MAX_LENGTHS.telegram}
+            />
+            {fieldErrors.telegram && (
+              <p className="text-sm text-red-600 mt-1">
+                {fieldErrors.telegram}
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label htmlFor="comment">Коментар</Label>
+            </div>
+            <Textarea
+              id="comment"
+              value={formData.comment}
+              onChange={(e) => handleChange('comment', e.target.value)}
+              placeholder="Поділіться Вашою проблемою"
+              rows={4}
+              disabled={isSubmitting}
+              className={`text-base resize-none ${
+                fieldErrors.comment ? 'border-red-500' : ''
+              }`}
+              maxLength={MAX_LENGTHS.comment}
+            />
+            {fieldErrors.comment && (
+              <p className="text-sm text-red-600 mt-1">{fieldErrors.comment}</p>
+            )}
+          </div>
+
+          {/* Старі поля (закоментовано) */}
+          {/* <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label htmlFor="name">
+                Ім'я
+              </Label>
             </div>
             <Input
               id="name"
@@ -292,16 +376,13 @@ export default function ContactFormModal({
             {fieldErrors.name && (
               <p className="text-sm text-red-600 mt-1">{fieldErrors.name}</p>
             )}
-          </div>
+          </div> */}
 
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <div className="flex justify-between items-center">
               <Label htmlFor="company">
-                Компанія <span className="text-red-600">*</span>
+                Компанія
               </Label>
-              {/* <span className="text-xs text-gray-500">
-                {formData.company.length}/{MAX_LENGTHS.company}
-              </span> */}
             </div>
             <Input
               id="company"
@@ -320,20 +401,17 @@ export default function ContactFormModal({
             {fieldErrors.company && (
               <p className="text-sm text-red-600 mt-1">{fieldErrors.company}</p>
             )}
-          </div>
+          </div> */}
 
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <div className="flex justify-between items-center">
               <Label htmlFor="contact">
                 Email / Телефон <span className="text-red-600">*</span>
               </Label>
-              {/* <span className="text-xs text-gray-500">
-                {formData.contact.length}/{MAX_LENGTHS.contact}
-              </span> */}
             </div>
             <Input
               id="contact"
-              type="text" // Використовуємо text замість email/tel для уникнення різної поведінки
+              type="text"
               value={formData.contact}
               onChange={(e) => handleChange('contact', e.target.value)}
               placeholder="your@email.com або +380..."
@@ -343,44 +421,18 @@ export default function ContactFormModal({
               className={`text-base ${
                 fieldErrors.contact ? 'border-red-500' : ''
               }`}
-              inputMode="email" // Підказка для клавіатури
+              inputMode="email"
               maxLength={MAX_LENGTHS.contact}
             />
             {fieldErrors.contact && (
               <p className="text-sm text-red-600 mt-1">{fieldErrors.contact}</p>
             )}
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="painPoint">Найбільший Ваш головний біль</Label>
-              {/* <span className="text-xs text-gray-500">
-                {formData.painPoint.length}/{MAX_LENGTHS.painPoint}
-              </span> */}
-            </div>
-            <Textarea
-              id="painPoint"
-              value={formData.painPoint}
-              onChange={(e) => handleChange('painPoint', e.target.value)}
-              placeholder="Розкажіть про вашу найбільшу проблему з управлінням знаннями..."
-              rows={4}
-              disabled={isSubmitting}
-              className={`text-base resize-none ${
-                fieldErrors.painPoint ? 'border-red-500' : ''
-              }`}
-              maxLength={MAX_LENGTHS.painPoint}
-            />
-            {fieldErrors.painPoint && (
-              <p className="text-sm text-red-600 mt-1">
-                {fieldErrors.painPoint}
-              </p>
-            )}
-          </div>
+          </div> */}
 
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#150D5E] hover:bg-[#534D8C] text-white py-6 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
@@ -389,7 +441,7 @@ export default function ContactFormModal({
               </>
             ) : (
               <>
-                Отримати демо
+                Забронювати демо
                 <ArrowRight className="ml-2 h-5 w-5" />
               </>
             )}
