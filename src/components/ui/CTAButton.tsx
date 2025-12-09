@@ -46,7 +46,7 @@ export default function CTAButton({
                 shadow-[0_4px_20px_-4px_hsl(160,84%,39%/0.3)] hover:shadow-[0_8px_30px_-6px_hsl(160,84%,39%/0.4)] 
                 hover:scale-105 transition-all duration-300 px-8 py-6 `;
       case 'final':
-        return 'bg-white text-black hover:bg-gray-100 px-8 py-6 ';
+        return 'bg-white text-black hover:bg-gray-100 px-8 py-6 rounded-[20px]';
       case 'hero':
         return `transition-all duration-300 bg-[#150D5E] hover:bg-[#534D8C] py-4 px-4 w-full md:w-fit 
                 md:px-6 rounded-[16px] text-xl font-semibold leading-normal min-h-[54px]`;

@@ -15,8 +15,8 @@ export default function Home() {
       <HeroSection />
       <PainSection />
       <SolutionSection />
-      <BenefitsSection />
-      <OfferSection />
+      {/* <BenefitsSection />
+      <OfferSection /> */}
       <TrustSection />
       <FinalCTASection />
       <Footer />
