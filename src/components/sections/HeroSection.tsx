@@ -32,32 +32,40 @@ export default function HeroSection() {
               iconSrc="/icons/camera.png"
               iconAlt="Camera"
               rotation={44.26}
+              iconRotation={-44.26}
               iconWidth={40}
               iconHeight={40}
+              priority={true}
               className="absolute top-0 left-10 lg:-top-40 z-20"
             />
             <IconContainer
               iconSrc="/icons/sms.png"
               iconAlt="Sms icon"
               rotation={-2.57}
+              iconRotation={-2.57}
               iconWidth={30}
               iconHeight={30}
+              priority={true}
               className="absolute top-0 lg:-top-50 left-1/2 z-20"
             />
             <IconContainer
               iconSrc="/icons/file.png"
               iconAlt="file icon"
               rotation={44.39}
+              iconRotation={-48.39}
               iconWidth={56}
               iconHeight={56}
+              priority={true}
               className="absolute top-20 lg:-top-20 left-1/3 z-20"
             />
             <IconContainer
               iconSrc="/icons/foto.png"
               iconAlt="foto icon"
               rotation={-3.36}
+              iconRotation={-3.36}
               iconWidth={30}
               iconHeight={30}
+              priority={true}
               className="absolute top-15 lg:-top-30 left-3/5 z-20"
             />
 

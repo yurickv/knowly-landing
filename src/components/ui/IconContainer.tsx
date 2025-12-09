@@ -8,6 +8,7 @@ interface IconContainerProps {
   iconWidth?: number;
   iconHeight?: number;
   className?: string;
+  priority?: boolean;
 }
 
 export default function IconContainer({
@@ -18,6 +19,7 @@ export default function IconContainer({
   rotation = 0,
   iconRotation,
   className = '',
+  priority = false,
 }: IconContainerProps) {
   return (
     <div
@@ -40,9 +42,10 @@ export default function IconContainer({
               alt={iconAlt}
               width={iconWidth}
               height={iconHeight}
+              priority={priority}
               className="w-full h-full object-contain"
               style={{
-                transform: `rotate(${iconRotation !== undefined ? iconRotation : -rotation}deg)`,
+                transform: `rotate(${iconRotation}deg)`,
               }}
             />
           </div>
