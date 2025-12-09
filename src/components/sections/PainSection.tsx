@@ -10,7 +10,7 @@ export default function PainSection() {
       title: 'Відео-інструкції',
       text: 'Запишіть екран або відео з телефону. AI нарізує кадри і створить покроковий гайд.',
       rotation: 0,
-      iconRotation: 45,
+      iconRotation: 0,
       bgGradient: 'linear-gradient(170.74deg, #7465FF 7.83%, #150D5E 93.91%)',
     },
     {

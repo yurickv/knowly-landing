@@ -188,7 +188,7 @@ export default function ContactFormModal({
 
   return (
     <Dialog open={open} onOpenChange={handleModalOpen}>
-      <DialogContent className="sm:max-w-[500px] ios-form-fix text-gray-900">
+      <DialogContent className="sm:max-w-[500px] ios-form-fix text-gray-900 ">
         {/* Додаємо стилі для фіксу iOS zoom */}
         <style jsx global>{`
           /* Фікс для iOS - забороняємо зум при фокусі на інпутах */
